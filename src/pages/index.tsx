@@ -1,10 +1,12 @@
 import { type NextPage } from "next";
 import Head from "next/head";
+import Link from "next/link";
+import Card from "~/components/Card";
 
 import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
-  // const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const listing = api.listings.listingLatestFour.useQuery();
 
   return (
     <>
@@ -18,10 +20,21 @@ const Home: NextPage = () => {
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Gim<span className="text-[hsl(280,100%,70%)]">me</span> Shop
           </h1>
-
-          <p className="text-2xl text-white">
-            {/* {hello.data ? hello.data.greeting : "Loading tRPC query..."} */}
+          <p className="text-2xl font-medium text-white">
+            O que os compradores estão procurando no momento
           </p>
+          <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-4">
+            {listing.isLoading ? (
+              <p>Loading...</p>
+            ) : (
+              listing.data?.map((item) => {
+                return <Card listing={item} key={item.id} />;
+              })
+            )}
+          </div>
+          <button className="text-md inline-flex items-center rounded-lg bg-[hsl(280,100%,50%)] px-12 py-4 text-center font-medium hover:bg-[hsl(280,100%,70%)] focus:ring-4 focus:ring-[hsl(280,100%,40%)]">
+            <Link href="/listings"> Ver todos </Link>
+          </button>
         </div>
       </main>
     </>

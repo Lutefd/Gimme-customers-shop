@@ -7,6 +7,35 @@ import {
 } from "~/server/api/trpc";
 
 export const listingsRouter = createTRPCRouter({
+  myListings: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.listing.findMany({
+      where: {
+        userId: ctx.auth.userId,
+      },
+    });
+  }),
+
+  listingAll: publicProcedure.query(async ({ ctx }) => {
+    return ctx.prisma.listing.findMany();
+  }),
+
+  listingLatestFour: publicProcedure.query(async ({ ctx }) => {
+    return ctx.prisma.listing.findMany({
+      take: 4,
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  }),
+  getItem: publicProcedure
+    .input(z.object({ listingId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      return ctx.prisma.listing.findUnique({
+        where: {
+          id: input.listingId,
+        },
+      });
+    }),
   create: protectedProcedure
     .input(
       z.object({
