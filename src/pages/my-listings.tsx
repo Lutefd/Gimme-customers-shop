@@ -1,6 +1,7 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Card from "~/components/Card";
+import Loading from "~/components/Loading";
 
 import { api } from "~/utils/api";
 
@@ -18,9 +19,15 @@ const Home: NextPage = () => {
         <h1 className="text-center text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
           Minhas ordens de compra
         </h1>
-        <div className="container grid items-center justify-center gap-12 px-4 py-16 md:grid-cols-4 ">
+        <div
+          className={
+            listing.isLoading
+              ? "grid place-content-center place-items-center"
+              : "container grid items-center justify-center gap-12 px-4 py-16 md:grid-cols-4 "
+          }
+        >
           {listing.isLoading ? (
-            <p>Loading...</p>
+            <Loading />
           ) : (
             listing.data?.map((item) => {
               return <Card listing={item} key={item.id} />;
