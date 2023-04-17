@@ -1,7 +1,6 @@
 import type { User } from "@clerk/nextjs/dist/api";
 import { z } from "zod";
 import { clerkClient } from "@clerk/nextjs/server";
-
 import {
   createTRPCRouter,
   publicProcedure,
@@ -76,24 +75,24 @@ export const listingsRouter = createTRPCRouter({
     .input(
       z.object({
         limit: z.number(),
-        cursor: z.string().optional(),
+        cursor: z.string().nullish(),
         skip: z.number().optional(),
       })
     )
     .query(async ({ input, ctx }) => {
-      const { limit, cursor, skip } = input;
+      const { limit, cursor } = input;
       const listedItems = await ctx.prisma.listing.findMany({
         take: limit + 1,
-        skip,
         cursor: cursor ? { id: cursor } : undefined,
         orderBy: {
           createdAt: "desc",
         },
       });
-      let nextCursor: typeof cursor | null = null;
+      let nextCursor: typeof cursor | undefined = undefined;
       if (listedItems.length > limit) {
         const nextItem = listedItems.pop();
-        nextCursor = nextItem?.id;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        nextCursor = nextItem!.id;
       }
       return {
         listedItems,
