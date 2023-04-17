@@ -12,6 +12,9 @@ export const listingsRouter = createTRPCRouter({
       where: {
         userId: ctx.auth.userId,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
   }),
 
