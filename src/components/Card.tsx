@@ -11,9 +11,14 @@ type Listing = {
 
 export default function Card({ listing }: { listing: Listing }) {
   return (
-    <div className="max-w-sm rounded-lg border border-gray-700 bg-gray-800 shadow">
+    <div className=" max-w-sm rounded-lg border border-gray-700 bg-gray-800 shadow">
       <Link href="#">
-        <img className="rounded-t-lg" src={listing.image} alt={listing.name} />
+        <img
+          className="max-h-[282px] max-w-[350px] rounded-t-lg"
+          src={listing.image}
+          alt={listing.name}
+          width={360}
+        />
       </Link>
       <div className="p-5">
         <Link href="#">
@@ -23,8 +28,8 @@ export default function Card({ listing }: { listing: Listing }) {
         </Link>
         <p className="mb-3 font-normal text-gray-400">{listing.description}</p>
         <Link
-          href="#"
-          className="inline-flex items-center rounded-lg bg-blue-600 px-3 py-2 text-center text-sm font-medium hover:bg-blue-700 focus:ring-4 focus:ring-blue-800"
+          href={`/listings/${listing.id}`}
+          className="inline-flex items-center rounded-lg bg-[hsl(280,100%,50%)] px-4 py-3 text-center text-sm font-medium hover:bg-[hsl(280,100%,70%)] focus:ring-4 focus:ring-[hsl(280,100%,40%)]"
         >
           Ver mais
           <svg
