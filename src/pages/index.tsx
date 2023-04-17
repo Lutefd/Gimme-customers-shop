@@ -1,4 +1,3 @@
-import { SignInButton, SignOutButton, useUser } from "@clerk/nextjs";
 import { type NextPage } from "next";
 import Head from "next/head";
 
@@ -6,8 +5,6 @@ import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
-
-  const user = useUser();
 
   return (
     <>
@@ -21,15 +18,7 @@ const Home: NextPage = () => {
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Gim<span className="text-[hsl(280,100%,70%)]">me</span> Shop
           </h1>
-          {user.isSignedIn ? (
-            <SignOutButton>
-              <span className="text-white">Logout</span>
-            </SignOutButton>
-          ) : (
-            <SignInButton>
-              <span className="text-white">Login</span>
-            </SignInButton>
-          )}
+
           <p className="text-2xl text-white">
             {hello.data ? hello.data.greeting : "Loading tRPC query..."}
           </p>
