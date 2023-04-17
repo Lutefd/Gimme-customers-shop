@@ -28,7 +28,7 @@ model Message {
   id         String   @id @default(cuid())
   createdAt  DateTime @default(now())
   fromUser   String
-  toUserName String
+  fromUserName String
   message    String
   listingId  String
   listing    Listing  @relation(fields: [listingId], references: [id])
