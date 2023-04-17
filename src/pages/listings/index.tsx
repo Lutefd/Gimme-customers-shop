@@ -105,7 +105,6 @@ const Home: NextPage = () => {
               </svg>
             </button>
           </div>
-          =
         </div>
       </main>
     </>
