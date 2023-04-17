@@ -4,6 +4,7 @@ import Head from "next/head";
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
 import { api } from "~/utils/api";
+import { useRouter } from "next/router";
 
 type Inputs = {
   name: string;
@@ -14,17 +15,21 @@ type Inputs = {
 
 const ListOrder: NextPage = () => {
   const createOrder = api.listings.create.useMutation();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<Inputs>();
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log(data);
-    await createOrder.mutateAsync({
-      ...data,
-      price: parseFloat(data.price),
-    });
+    await createOrder
+      .mutateAsync({
+        ...data,
+        price: parseFloat(data.price),
+      })
+      .then(async () => {
+        await router.push("/my-listings");
+      });
   };
 
   return (
