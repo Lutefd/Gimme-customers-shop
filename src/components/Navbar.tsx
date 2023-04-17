@@ -7,16 +7,11 @@ export function Navbar() {
   return (
     <nav className="bg-gray-900">
       <div className="mx-auto flex max-w-screen-xl flex-wrap items-center justify-between p-4">
-        <a href="https://flowbite.com/" className="flex items-center">
-          <img
-            src="https://flowbite.com/docs/images/logo.svg"
-            className="mr-3 h-8"
-            alt="Flowbite Logo"
-          />
+        <Link href="/" className="flex items-center">
           <span className="self-center whitespace-nowrap text-2xl font-semibold text-white">
             Gim<span className="text-[hsl(280,100%,70%)]">me</span> Shop
           </span>
-        </a>
+        </Link>
         <button
           data-collapse-toggle="navbar-default"
           type="button"
@@ -60,14 +55,24 @@ export function Navbar() {
               </li>
             )}
             {user.isSignedIn && (
-              <li>
-                <Link
-                  href="/list-an-order"
-                  className="block  rounded py-2 pl-3 pr-4 text-white hover:bg-gray-700 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent  md:hover:text-blue-500"
-                >
-                  Comprar
-                </Link>
-              </li>
+              <>
+                <li>
+                  <Link
+                    href="/list-an-order"
+                    className="block  rounded py-2 pl-3 pr-4 text-white hover:bg-gray-700 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent  md:hover:text-blue-500"
+                  >
+                    Comprar
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/my-listings"
+                    className="block  rounded py-2 pl-3 pr-4 text-white hover:bg-gray-700 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent  md:hover:text-blue-500"
+                  >
+                    Minhas Compras
+                  </Link>
+                </li>
+              </>
             )}
             <li>
               <UserButton />
