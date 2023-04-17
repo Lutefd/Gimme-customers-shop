@@ -30,6 +30,7 @@ model Message {
   fromUser   String
   fromUserName String
   message    String
+  listingName String
   listingId  String
   listing    Listing  @relation(fields: [listingId], references: [id])
   @@index([listingId])
