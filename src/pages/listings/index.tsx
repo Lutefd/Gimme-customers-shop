@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import { type NextPage } from "next";
 import Head from "next/head";
 import { useState } from "react";
@@ -21,7 +22,7 @@ const Home: NextPage = () => {
 
   const handleFetchNextPage = async () => {
     await fetchNextPage();
-    setPage(page + 1);
+    return setPage(page + 1);
   };
 
   const handleFetchPreviousPage = () => {
@@ -63,7 +64,7 @@ const Home: NextPage = () => {
           <div className="flex items-center gap-4">
             <button
               className="text-md inline-flex items-center rounded-lg bg-[hsl(280,100%,50%)] px-8 py-4 text-center font-medium hover:bg-[hsl(280,100%,70%)] focus:ring-4 focus:ring-[hsl(280,100%,40%)] disabled:bg-slate-500"
-              onClick={() => handleFetchPreviousPage}
+              onClick={() => handleFetchPreviousPage()}
               disabled={page === 0}
             >
               <svg
@@ -85,7 +86,7 @@ const Home: NextPage = () => {
               className={
                 "text-md inline-flex items-center rounded-lg bg-[hsl(280,100%,50%)] px-8 py-4 text-center font-medium hover:bg-[hsl(280,100%,70%)] focus:ring-4 focus:ring-[hsl(280,100%,40%)] disabled:bg-slate-500"
               }
-              onClick={() => handleFetchNextPage}
+              onClick={() => handleFetchNextPage()}
               disabled={!listing?.nextCursor}
             >
               Próximo
