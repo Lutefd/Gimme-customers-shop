@@ -1,10 +1,11 @@
 import { type NextPage } from "next";
 import Head from "next/head";
+import Card from "~/components/Card";
 
 import { api } from "~/utils/api";
 
 const Home: NextPage = () => {
-  // const hello = api.example.hello.useQuery({ text: "from tRPC" });
+  const listing = api.listings.listingAll.useQuery();
 
   return (
     <>
@@ -18,10 +19,13 @@ const Home: NextPage = () => {
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Gim<span className="text-[hsl(280,100%,70%)]">me</span> Shop
           </h1>
-
-          <p className="text-2xl text-white">
-            {/* {hello.data ? hello.data.greeting : "Loading tRPC query..."} */}
-          </p>
+          {listing.isLoading ? (
+            <p>Loading...</p>
+          ) : (
+            listing.data?.map((item) => {
+              return <Card listing={item} key={item.id} />;
+            })
+          )}
         </div>
       </main>
     </>
