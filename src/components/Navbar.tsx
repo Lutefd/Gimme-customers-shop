@@ -1,4 +1,4 @@
-import { SignInButton, UserButton, useUser } from "@clerk/nextjs";
+import { UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
 
 /* eslint-disable @next/next/no-img-element */
@@ -52,11 +52,11 @@ export function Navbar() {
             </li>
             {!user.isSignedIn && (
               <li>
-                <SignInButton>
+                <Link href="/sign-in">
                   <span className="block cursor-pointer rounded py-2 pl-3 pr-4 text-white hover:bg-gray-700 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent  md:hover:text-blue-500">
                     Login
                   </span>
-                </SignInButton>
+                </Link>
               </li>
             )}
             {user.isSignedIn && (
