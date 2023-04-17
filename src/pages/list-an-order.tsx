@@ -3,6 +3,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import { useForm } from "react-hook-form";
 import type { SubmitHandler } from "react-hook-form";
+import { api } from "~/utils/api";
 
 type Inputs = {
   name: string;
@@ -12,15 +13,20 @@ type Inputs = {
 };
 
 const ListOrder: NextPage = () => {
+  const createOrder = api.listings.create.useMutation();
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
   } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log(data);
+    await createOrder.mutateAsync({
+      ...data,
+      price: parseFloat(data.price),
+    });
+  };
 
-  console.log(watch("name"));
   return (
     <>
       <Head>
