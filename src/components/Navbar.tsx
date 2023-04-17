@@ -117,6 +117,21 @@ export function Navbar() {
                     Minhas Compras
                   </Link>
                 </li>
+                <li>
+                  <Link
+                    href="/offers"
+                    className="block  rounded text-white hover:bg-gray-700 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent  md:hover:text-blue-500"
+                    onClick={
+                      isExpanded
+                        ? handleToggle
+                        : () => {
+                            return;
+                          }
+                    }
+                  >
+                    Ofertas
+                  </Link>
+                </li>
               </>
             )}
             <li>
