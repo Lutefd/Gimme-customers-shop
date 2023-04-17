@@ -20,7 +20,7 @@ const Home: NextPage = () => {
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Gim<span className="text-[hsl(280,100%,70%)]">me</span> Shop
           </h1>
-          <p className="text-2xl font-medium text-white">
+          <p className="text-center text-2xl font-medium text-white">
             O que os compradores estão procurando no momento
           </p>
           <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-4">
