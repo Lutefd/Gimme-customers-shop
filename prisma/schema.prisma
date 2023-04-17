@@ -2,23 +2,36 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-    provider = "prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
 model Listing {
-    id        String   @id @default(cuid())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    userId   String
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  userId    String
 
-    name String
-    description String
-    price Float
-    image String    
+  name        String
+  description String
+  price       Float
+  image       String
+  Message     Message[]
+}
+
+model Message {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  fromUser   String
+  fromUserName String
+  message    String
+  listingName String
+  listingId  String
+  listing    Listing  @relation(fields: [listingId], references: [id])
+  @@index([listingId])
 }

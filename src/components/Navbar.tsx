@@ -50,7 +50,7 @@ export function Navbar() {
           }
           id="navbar-default"
         >
-          <ul className="mt-4 flex flex-col items-center rounded-lg border border-gray-700 bg-gray-800 p-4 font-medium md:mt-0 md:flex-row md:justify-center md:space-x-8 md:border-0  md:bg-gray-900 md:p-0">
+          <ul className="mt-4 flex flex-col items-start justify-center rounded-lg border border-gray-700 bg-gray-800 p-4 font-medium md:mt-0 md:flex-row md:items-center md:justify-center md:space-x-8 md:border-0  md:bg-gray-900 md:p-0">
             <li>
               <Link
                 href="/"
@@ -79,7 +79,7 @@ export function Navbar() {
                         }
                   }
                 >
-                  <span className="block cursor-pointer rounded py-2 pl-3 pr-4 text-white hover:bg-gray-700 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent  md:hover:text-blue-500">
+                  <span className="block cursor-pointer rounded  text-white hover:bg-gray-700 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent  md:hover:text-blue-500">
                     Login
                   </span>
                 </Link>
@@ -90,7 +90,7 @@ export function Navbar() {
                 <li>
                   <Link
                     href="/list-an-order"
-                    className="block  rounded py-2 pl-3 pr-4 text-white hover:bg-gray-700 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent  md:hover:text-blue-500"
+                    className="block  rounded text-white hover:bg-gray-700 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent  md:hover:text-blue-500"
                     onClick={
                       isExpanded
                         ? handleToggle
@@ -105,7 +105,7 @@ export function Navbar() {
                 <li>
                   <Link
                     href="/my-listings"
-                    className="block  rounded py-2 pl-3 pr-4 text-white hover:bg-gray-700 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent  md:hover:text-blue-500"
+                    className="block  rounded text-white hover:bg-gray-700 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent  md:hover:text-blue-500"
                     onClick={
                       isExpanded
                         ? handleToggle
@@ -115,6 +115,21 @@ export function Navbar() {
                     }
                   >
                     Minhas Compras
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/offers"
+                    className="block  rounded text-white hover:bg-gray-700 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent  md:hover:text-blue-500"
+                    onClick={
+                      isExpanded
+                        ? handleToggle
+                        : () => {
+                            return;
+                          }
+                    }
+                  >
+                    Ofertas
                   </Link>
                 </li>
               </>

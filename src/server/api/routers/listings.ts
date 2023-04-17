@@ -1,16 +1,32 @@
+import type { User } from "@clerk/nextjs/dist/api";
 import { z } from "zod";
+import { clerkClient } from "@clerk/nextjs/server";
 
 import {
   createTRPCRouter,
   publicProcedure,
   protectedProcedure,
 } from "~/server/api/trpc";
+import { TRPCError } from "@trpc/server";
+
+const filterUserForClient = (user: User) => {
+  return {
+    id: user.id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    username: user.username,
+    profilePicture: user.profileImageUrl,
+  };
+};
 
 export const listingsRouter = createTRPCRouter({
   myListings: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.listing.findMany({
       where: {
         userId: ctx.auth.userId,
+      },
+      orderBy: {
+        createdAt: "desc",
       },
     });
   }),
@@ -30,11 +46,59 @@ export const listingsRouter = createTRPCRouter({
   getItem: publicProcedure
     .input(z.object({ listingId: z.string() }))
     .query(async ({ input, ctx }) => {
-      return ctx.prisma.listing.findUnique({
+      const listedItems = await ctx.prisma.listing.findMany({
         where: {
           id: input.listingId,
         },
       });
+      const users = (
+        await clerkClient.users.getUserList({
+          // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call
+          userId: listedItems.map((item) => item.userId),
+        })
+      ).map(filterUserForClient);
+      return listedItems.map((item) => {
+        const author = users.find((user) => user.id === item.userId);
+        if (!author) {
+          throw new TRPCError({
+            code: "INTERNAL_SERVER_ERROR",
+            message: "Autor não encontrado",
+          });
+        }
+        return {
+          item,
+          author,
+        };
+      });
+    }),
+
+  getBatch: publicProcedure
+    .input(
+      z.object({
+        limit: z.number(),
+        cursor: z.string().optional(),
+        skip: z.number().optional(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const { limit, cursor, skip } = input;
+      const listedItems = await ctx.prisma.listing.findMany({
+        take: limit + 1,
+        skip,
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+      let nextCursor: typeof cursor | null = null;
+      if (listedItems.length > limit) {
+        const nextItem = listedItems.pop();
+        nextCursor = nextItem?.id;
+      }
+      return {
+        listedItems,
+        nextCursor,
+      };
     }),
   create: protectedProcedure
     .input(
@@ -46,8 +110,6 @@ export const listingsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      // todo save to db
-
       const listing = await ctx.prisma.listing.create({
         data: {
           name: input.name,

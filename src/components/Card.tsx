@@ -11,10 +11,10 @@ type Listing = {
 
 export default function Card({ listing }: { listing: Listing }) {
   return (
-    <div className=" max-w-sm rounded-lg border border-gray-700 bg-gray-800 shadow">
+    <div className=" min-w-[352px] max-w-[352px] rounded-lg border border-gray-700 bg-gray-800 shadow">
       <Link href="#">
         <img
-          className="max-h-[282px] max-w-[350px] rounded-t-lg"
+          className="max-h-[282px] min-h-[282px] min-w-[350px] max-w-[350px] rounded-t-lg"
           src={listing.image}
           alt={listing.name}
           width={360}
@@ -26,7 +26,9 @@ export default function Card({ listing }: { listing: Listing }) {
             {listing.name}
           </h5>
         </Link>
-        <p className="mb-3 font-normal text-gray-400">{listing.description}</p>
+        <p className="mb-3 min-h-[4rem] font-normal text-gray-400">
+          {listing.description}
+        </p>
         <Link
           href={`/listings/${listing.id}`}
           className="inline-flex items-center rounded-lg bg-[hsl(280,100%,50%)] px-4 py-3 text-center text-sm font-medium hover:bg-[hsl(280,100%,70%)] focus:ring-4 focus:ring-[hsl(280,100%,40%)]"

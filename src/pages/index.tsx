@@ -2,6 +2,7 @@ import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import Card from "~/components/Card";
+import Loading from "~/components/Loading";
 
 import { api } from "~/utils/api";
 
@@ -20,12 +21,18 @@ const Home: NextPage = () => {
           <h1 className="text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
             Gim<span className="text-[hsl(280,100%,70%)]">me</span> Shop
           </h1>
-          <p className="text-2xl font-medium text-white">
+          <p className="text-center text-2xl font-medium text-white">
             O que os compradores estão procurando no momento
           </p>
-          <div className="grid gap-4 md:grid-cols-3 xl:grid-cols-4">
+          <div
+            className={
+              listing.isLoading
+                ? "grid place-items-center"
+                : "grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
+            }
+          >
             {listing.isLoading ? (
-              <p>Loading...</p>
+              <Loading />
             ) : (
               listing.data?.map((item) => {
                 return <Card listing={item} key={item.id} />;
