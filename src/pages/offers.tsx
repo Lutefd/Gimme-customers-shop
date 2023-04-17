@@ -1,5 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
+import Loading from "~/components/Loading";
 
 import { api } from "~/utils/api";
 
@@ -7,8 +8,12 @@ const Home: NextPage = () => {
   const messages = api.messages.getMessages.useQuery();
 
   const messageData = messages.data;
-  console.log(messageData);
-
+  if (!messageData)
+    return (
+      <div className="grid h-screen place-items-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+        <Loading />
+      </div>
+    );
   return (
     <>
       <Head>
