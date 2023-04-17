@@ -37,11 +37,14 @@ const Home: NextPage = () => {
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const listingId = router.query.id as string;
     const message = data.message;
+    if (!listing.data) return;
+    const listingName = listing.data[0]?.item.name;
 
     await sendMessage
       .mutateAsync({
         listingId,
         message,
+        listingName: listingName || "",
       })
       .then(() => reset());
   };
@@ -83,7 +86,7 @@ const Home: NextPage = () => {
               {!user.isSignedIn && (
                 <button className="text-md mt-6 inline-flex items-center rounded-lg bg-[hsl(280,100%,50%)] px-12 py-4 text-center font-medium hover:bg-[hsl(280,100%,70%)] focus:ring-4 focus:ring-[hsl(280,100%,40%)]">
                   <Link
-                    href="/listings"
+                    href="/sign-in"
                     className="mx-auto self-center text-center"
                   >
                     {" "}
@@ -96,12 +99,12 @@ const Home: NextPage = () => {
                 <form onSubmit={handleSubmit(onSubmit)}>
                   <textarea
                     className="mb-4 w-full rounded bg-gray-200 px-4 py-2 text-gray-700"
-                    placeholder="Mensagem"
+                    placeholder="Mande sua informação de contato para o dono do pedido. "
                     {...register("message", { required: true })}
                   />
                   {errors.message && (
                     <span className="text-sm text-red-500">
-                      This field is required
+                      Esse campo é obrigatório
                     </span>
                   )}
                   <button
