@@ -1,8 +1,15 @@
 import { UserButton, useUser } from "@clerk/nextjs";
 import Link from "next/link";
+import { useState } from "react";
 
 /* eslint-disable @next/next/no-img-element */
 export function Navbar() {
+  const [isExpanded, setIsExpanded] = useState(false);
+
+  const handleToggle = () => {
+    setIsExpanded(!isExpanded);
+  };
+
   const user = useUser();
   return (
     <nav className="bg-gray-900">
@@ -18,6 +25,7 @@ export function Navbar() {
           className="ml-3 inline-flex items-center rounded-lg p-2 text-sm  text-gray-400 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-600 md:hidden"
           aria-controls="navbar-default"
           aria-expanded="false"
+          onClick={handleToggle}
         >
           <span className="sr-only">Abrir o menu principal</span>
           <svg
@@ -34,20 +42,43 @@ export function Navbar() {
             ></path>
           </svg>
         </button>
-        <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-          <ul className="mt-4 flex flex-col items-center justify-center rounded-lg border border-gray-700 bg-gray-800 p-4 font-medium md:mt-0 md:flex-row md:space-x-8 md:border-0  md:bg-gray-900 md:p-0">
+        <div
+          className={
+            isExpanded
+              ? "w-full md:block md:w-auto"
+              : "hidden w-full md:block md:w-auto"
+          }
+          id="navbar-default"
+        >
+          <ul className="mt-4 flex flex-col items-center rounded-lg border border-gray-700 bg-gray-800 p-4 font-medium md:mt-0 md:flex-row md:justify-center md:space-x-8 md:border-0  md:bg-gray-900 md:p-0">
             <li>
               <Link
                 href="/"
-                className="block rounded bg-blue-700 py-2 pl-3 pr-4 text-white  md:bg-transparent md:p-0  md:text-blue-500"
+                className="block p-0 text-center text-blue-500"
                 aria-current="page"
+                onClick={
+                  isExpanded
+                    ? handleToggle
+                    : () => {
+                        return;
+                      }
+                }
               >
                 Home
               </Link>
             </li>
             {!user.isSignedIn && (
               <li>
-                <Link href="/sign-in">
+                <Link
+                  href="/sign-in"
+                  onClick={
+                    isExpanded
+                      ? handleToggle
+                      : () => {
+                          return;
+                        }
+                  }
+                >
                   <span className="block cursor-pointer rounded py-2 pl-3 pr-4 text-white hover:bg-gray-700 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent  md:hover:text-blue-500">
                     Login
                   </span>
@@ -60,6 +91,13 @@ export function Navbar() {
                   <Link
                     href="/list-an-order"
                     className="block  rounded py-2 pl-3 pr-4 text-white hover:bg-gray-700 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent  md:hover:text-blue-500"
+                    onClick={
+                      isExpanded
+                        ? handleToggle
+                        : () => {
+                            return;
+                          }
+                    }
                   >
                     Comprar
                   </Link>
@@ -68,6 +106,13 @@ export function Navbar() {
                   <Link
                     href="/my-listings"
                     className="block  rounded py-2 pl-3 pr-4 text-white hover:bg-gray-700 hover:text-white md:border-0 md:p-0 md:hover:bg-transparent  md:hover:text-blue-500"
+                    onClick={
+                      isExpanded
+                        ? handleToggle
+                        : () => {
+                            return;
+                          }
+                    }
                   >
                     Minhas Compras
                   </Link>
