@@ -18,6 +18,24 @@ export const listingsRouter = createTRPCRouter({
   listingAll: publicProcedure.query(async ({ ctx }) => {
     return ctx.prisma.listing.findMany();
   }),
+
+  listingLatestFour: publicProcedure.query(async ({ ctx }) => {
+    return ctx.prisma.listing.findMany({
+      take: 4,
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+  }),
+  getItem: publicProcedure
+    .input(z.object({ listingId: z.string() }))
+    .query(async ({ input, ctx }) => {
+      return ctx.prisma.listing.findUnique({
+        where: {
+          id: input.listingId,
+        },
+      });
+    }),
   create: protectedProcedure
     .input(
       z.object({
