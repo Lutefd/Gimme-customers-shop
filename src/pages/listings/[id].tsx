@@ -1,13 +1,24 @@
 /* eslint-disable @next/next/no-img-element */
+/* eslint-disable @typescript-eslint/no-misused-promises */
+
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { api } from "~/utils/api";
+import { useUser } from "@clerk/nextjs";
+import { useForm } from "react-hook-form";
+import type { SubmitHandler } from "react-hook-form";
+
+import Loading from "~/components/Loading";
+
+type Inputs = {
+  message: string;
+};
 
 const Home: NextPage = () => {
+  const user = useUser();
   const router = useRouter();
-
   const listing = api.listings.getItem.useQuery(
     {
       listingId: router.query.id as string,
@@ -16,9 +27,30 @@ const Home: NextPage = () => {
       enabled: !!router.query.id,
     }
   );
-  const item = listing.data;
+  const sendMessage = api.messages.sendMessages.useMutation();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm<Inputs>();
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    const listingId = router.query.id as string;
+    const message = data.message;
 
-  if (!item) return <p>Loading...</p>;
+    await sendMessage
+      .mutateAsync({
+        listingId,
+        message,
+      })
+      .then(() => reset());
+  };
+
+  if (!listing.data) return <Loading />;
+  const item = listing.data[0]?.item;
+  const author = listing.data[0]?.author;
+
+  if (!item) return <Loading />;
 
   return (
     <>
@@ -42,18 +74,44 @@ const Home: NextPage = () => {
               <p className="mb-6 text-2xl font-normal text-gray-400">
                 {item.description}
               </p>
-              <p className="mb-3 text-xl font-normal text-gray-400">
+              <p className="mb-1 text-xl font-normal text-gray-400">
                 Preço Desejado: R${item.price}
               </p>
-              <button className="text-md mt-6 inline-flex items-center rounded-lg bg-[hsl(280,100%,50%)] px-12 py-4 text-center font-medium hover:bg-[hsl(280,100%,70%)] focus:ring-4 focus:ring-[hsl(280,100%,40%)]">
-                <Link
-                  href="/listings"
-                  className="mx-auto self-center text-center"
-                >
-                  {" "}
-                  Mandar mensagem{" "}
-                </Link>
-              </button>
+              <p className="text-md mb-6 font-normal text-gray-400">
+                Pedido por: {author?.firstName} {author?.lastName}
+              </p>
+              {!user.isSignedIn && (
+                <button className="text-md mt-6 inline-flex items-center rounded-lg bg-[hsl(280,100%,50%)] px-12 py-4 text-center font-medium hover:bg-[hsl(280,100%,70%)] focus:ring-4 focus:ring-[hsl(280,100%,40%)]">
+                  <Link
+                    href="/listings"
+                    className="mx-auto self-center text-center"
+                  >
+                    {" "}
+                    Mandar mensagem{" "}
+                  </Link>
+                </button>
+              )}
+
+              {user.isSignedIn && (
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <textarea
+                    className="mb-4 w-full rounded bg-gray-200 px-4 py-2 text-gray-700"
+                    placeholder="Mensagem"
+                    {...register("message", { required: true })}
+                  />
+                  {errors.message && (
+                    <span className="text-sm text-red-500">
+                      This field is required
+                    </span>
+                  )}
+                  <button
+                    className="text-md mt-6 inline-flex items-center rounded-lg bg-[hsl(280,100%,50%)] px-12 py-4 text-center font-medium hover:bg-[hsl(280,100%,70%)] focus:ring-4 focus:ring-[hsl(280,100%,40%)]"
+                    type="submit"
+                  >
+                    Mandar mensagem
+                  </button>
+                </form>
+              )}
             </div>
           </div>
         </div>
