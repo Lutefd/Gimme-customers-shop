@@ -19,16 +19,37 @@ const filterUserForClient = (user: User) => {
 };
 
 export const listingsRouter = createTRPCRouter({
-  myListings: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.listing.findMany({
-      where: {
-        userId: ctx.auth.userId,
-      },
-      orderBy: {
-        createdAt: "desc",
-      },
-    });
-  }),
+  myListings: protectedProcedure
+    .input(
+      z.object({
+        limit: z.number(),
+        cursor: z.string().nullish(),
+        skip: z.number().optional(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const { limit, cursor } = input;
+      const listedItems = await ctx.prisma.listing.findMany({
+        take: limit + 1,
+        cursor: cursor ? { id: cursor } : undefined,
+        where: {
+          userId: ctx.auth.userId,
+        },
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+      let nextCursor: typeof cursor | undefined = undefined;
+      if (listedItems.length > limit) {
+        const nextItem = listedItems.pop();
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        nextCursor = nextItem!.id;
+      }
+      return {
+        listedItems,
+        nextCursor,
+      };
+    }),
 
   listingAll: publicProcedure.query(async ({ ctx }) => {
     return ctx.prisma.listing.findMany();

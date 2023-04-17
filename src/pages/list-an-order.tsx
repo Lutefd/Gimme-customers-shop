@@ -57,7 +57,11 @@ const ListOrder: NextPage = () => {
                 id="name"
                 className="block w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 text-sm text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
               />
+              {errors.name && (
+                <span className="text-red-500">Esse campo é obrigatorio</span>
+              )}
             </div>
+
             <div className="">
               <label
                 htmlFor="description"
@@ -70,6 +74,9 @@ const ListOrder: NextPage = () => {
                 id="description"
                 className="block w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 text-sm text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
               />
+              {errors.description && (
+                <span className="text-red-500">Esse campo é obrigatorio</span>
+              )}
             </div>
             <div className="">
               <label
@@ -85,6 +92,9 @@ const ListOrder: NextPage = () => {
                 {...register("price", { required: true })}
                 className="block w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 text-sm text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
               />
+              {errors.price && (
+                <span className="text-red-500">Esse campo é obrigatorio</span>
+              )}
             </div>
             <div className="">
               <label
@@ -100,15 +110,14 @@ const ListOrder: NextPage = () => {
                 {...register("image", { required: true })}
                 className="block w-full rounded-lg border border-gray-600 bg-gray-700 p-2.5 text-sm text-white placeholder-gray-400 focus:border-blue-500 focus:ring-blue-500"
               />
+              {errors.image && (
+                <span className="text-red-500">Esse campo é obrigatorio</span>
+              )}
             </div>
-            {/* errors will return when field validation fails  */}
-            {errors.name && <span>Esse campo é obrigatorio</span>}
-            {errors.description && <span>Esse campo é obrigatorio</span>}
-            {errors.price && <span>Esse campo é obrigatorio</span>}
 
             <button
               type="submit"
-              className="mb-2 self-center rounded-lg bg-purple-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900"
+              className="mb-2 self-center rounded-lg bg-purple-700 px-5 py-2.5 text-sm font-medium text-white hover:bg-purple-800  active:scale-95"
             >
               Criar
             </button>

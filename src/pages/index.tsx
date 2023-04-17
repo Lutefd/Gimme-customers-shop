@@ -39,9 +39,12 @@ const Home: NextPage = () => {
               })
             )}
           </div>
-          <button className="text-md inline-flex items-center rounded-lg bg-[hsl(280,100%,50%)] px-12 py-4 text-center font-medium hover:bg-[hsl(280,100%,70%)] focus:ring-4 focus:ring-[hsl(280,100%,40%)]">
-            <Link href="/listings"> Ver todos </Link>
-          </button>
+          <Link
+            href="/listings"
+            className="text-md inline-flex items-center rounded-lg bg-[hsl(280,100%,50%)] px-12 py-4 text-center font-medium hover:bg-[hsl(280,100%,70%)]  active:scale-95"
+          >
+            Ver Todas
+          </Link>
         </div>
       </main>
     </>
