@@ -7,6 +7,17 @@ import {
 } from "~/server/api/trpc";
 
 export const listingsRouter = createTRPCRouter({
+  myListings: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.listing.findMany({
+      where: {
+        userId: ctx.auth.userId,
+      },
+    });
+  }),
+
+  listingAll: publicProcedure.query(async ({ ctx }) => {
+    return ctx.prisma.listing.findMany();
+  }),
   create: protectedProcedure
     .input(
       z.object({
