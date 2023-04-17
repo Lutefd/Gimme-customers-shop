@@ -71,6 +71,35 @@ export const listingsRouter = createTRPCRouter({
         };
       });
     }),
+
+  getBatch: publicProcedure
+    .input(
+      z.object({
+        limit: z.number(),
+        cursor: z.string().optional(),
+        skip: z.number().optional(),
+      })
+    )
+    .query(async ({ input, ctx }) => {
+      const { limit, cursor, skip } = input;
+      const listedItems = await ctx.prisma.listing.findMany({
+        take: limit + 1,
+        skip,
+        cursor: cursor ? { id: cursor } : undefined,
+        orderBy: {
+          createdAt: "desc",
+        },
+      });
+      let nextCursor: typeof cursor | null = null;
+      if (listedItems.length > limit) {
+        const nextItem = listedItems.pop();
+        nextCursor = nextItem?.id;
+      }
+      return {
+        listedItems,
+        nextCursor,
+      };
+    }),
   create: protectedProcedure
     .input(
       z.object({
@@ -81,8 +110,6 @@ export const listingsRouter = createTRPCRouter({
       })
     )
     .mutation(async ({ input, ctx }) => {
-      // todo save to db
-
       const listing = await ctx.prisma.listing.create({
         data: {
           name: input.name,
