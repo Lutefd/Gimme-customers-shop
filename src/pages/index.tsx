@@ -28,7 +28,7 @@ const Home: NextPage = () => {
             className={
               listing.isLoading
                 ? "grid place-items-center"
-                : "grid gap-4 md:grid-cols-3 xl:grid-cols-4"
+                : "grid gap-4 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
             }
           >
             {listing.isLoading ? (
