@@ -59,7 +59,9 @@ const Home: NextPage = () => {
             }
           >
             {!listing?.listedItems ? (
-              <Loading />
+              <div className="grid h-screen place-items-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+                <Loading />
+              </div>
             ) : (
               listing?.listedItems.map((item) => {
                 return <Card listing={item} key={item.id} />;
