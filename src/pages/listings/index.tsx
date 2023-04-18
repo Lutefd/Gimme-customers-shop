@@ -11,7 +11,7 @@ const Home: NextPage = () => {
   const [page, setPage] = useState(0);
   const { data, fetchNextPage } = api.listings.getBatch.useInfiniteQuery(
     {
-      limit: 4,
+      limit: 8,
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
