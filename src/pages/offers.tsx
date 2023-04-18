@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/restrict-template-expressions */
 import { type NextPage } from "next";
 import Head from "next/head";
 import Loading from "~/components/Loading";
@@ -14,6 +15,7 @@ const Home: NextPage = () => {
         <Loading />
       </div>
     );
+
   return (
     <>
       <Head>
@@ -27,7 +29,7 @@ const Home: NextPage = () => {
             Suas Ofertas
           </h1>
           <div className="grid place-items-center overflow-auto">
-            <div className="relative overflow-x-auto">
+            <div className="scroll1 relative overflow-x-auto">
               <table className=" w-full  text-left text-sm text-gray-500 dark:text-gray-400">
                 <thead className=" bg-gray-700 text-xs uppercase text-gray-400">
                   <tr>
@@ -52,7 +54,8 @@ const Home: NextPage = () => {
                         {message.listingName}
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
-                        {message.fromUser?.username}
+                        {message.fromUser?.username ||
+                          `${message.fromUser?.firstName}  ${message.fromUser?.lastName}`}
                       </td>
                       <td className="whitespace-nowrap px-6 py-4">
                         {message.message}
