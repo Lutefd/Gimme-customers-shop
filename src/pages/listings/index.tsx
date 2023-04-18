@@ -11,14 +11,19 @@ const Home: NextPage = () => {
   const [page, setPage] = useState(0);
   const { data, fetchNextPage } = api.listings.getBatch.useInfiniteQuery(
     {
-      limit: 4,
+      limit: 8,
     },
     {
       getNextPageParam: (lastPage) => lastPage.nextCursor,
     }
   );
 
-  if (!data) return <Loading />;
+  if (!data)
+    return (
+      <div className="grid h-screen place-items-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+        <Loading />
+      </div>
+    );
 
   const handleFetchNextPage = async () => {
     await fetchNextPage();
