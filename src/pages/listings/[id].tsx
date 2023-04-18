@@ -49,11 +49,21 @@ const Home: NextPage = () => {
       .then(() => reset());
   };
 
-  if (!listing.data) return <Loading />;
+  if (!listing.data)
+    return (
+      <div className="grid h-screen place-items-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+        <Loading />
+      </div>
+    );
   const item = listing.data[0]?.item;
   const author = listing.data[0]?.author;
 
-  if (!item) return <Loading />;
+  if (!item)
+    return (
+      <div className="grid h-screen place-items-center bg-gradient-to-b from-[#2e026d] to-[#15162c]">
+        <Loading />
+      </div>
+    );
 
   return (
     <>
